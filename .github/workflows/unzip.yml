@@ -1,0 +1,28 @@
+name: Unzip Project
+
+on:
+  push:
+    paths:
+      - 'electricity-hub-android.zip'
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Unzip project
+        run: |
+          mkdir temp
+          unzip electricity-hub-android.zip -d temp
+          cp -r temp/* .
+          rm -rf temp
+
+      - name: Commit unzipped files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Unzipped electricity-hub-android.zip"
+          git push
